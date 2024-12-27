@@ -1,5 +1,5 @@
 **I Have builded a new apk URL please check this*:- ```bash https://expo.dev/accounts/aaryap12/projects/calculator-app/builds/05623d7f-08ab-4872-9601-0b6eb2f7d96b
-The earlier i submitted didnt had the feature of switching between light and dark mode now i have made the changes in this link please kindly check this new apk URL
+I have made some changes in the code please kindly check this new apk URL.
 
 A simple and functional calculator app built using **React Native** and **Expo**.
 
