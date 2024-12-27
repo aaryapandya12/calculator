@@ -16,6 +16,13 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<string[]>([]);
   const [showHistory, setShowHistory] = useState<boolean>(false);
   const [cursorPosition, setCursorPosition] = useState<number>(0);
+  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(true);
+
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
+
+  const dynamicStyles = isDarkTheme ? darkStyles : lightStyles;
 
   const handleInputChange = (button: string) => {
     if (button === "AC") {
@@ -128,25 +135,34 @@ const App: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={styles.navbar}>
+      <View style={[styles.container, dynamicStyles.container]}>
+        <View style={[styles.navbar, dynamicStyles.navbar]}>
           <View style={styles.navbarContent}>
             <Icon
               name="calculate"
               size={28}
-              color="white"
+              color={isDarkTheme ? "white" : "black"}
               style={styles.navbarIcon}
             />
-            <Text style={styles.navbarTitle}>Calculator App</Text>
+            <Text style={[styles.navbarTitle, dynamicStyles.navbarTitle]}>
+              Avegen Calculator App
+            </Text>
+            <TouchableOpacity onPress={toggleTheme} style={styles.themeToggle}>
+              <Icon
+                name={isDarkTheme ? "wb-sunny" : "brightness-3"}
+                size={24}
+                color={isDarkTheme ? "white" : "black"}
+              />
+            </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.calculatorContainer}>
-          <View style={styles.inputContainer}>
+        <View style={[styles.calculatorContainer, dynamicStyles.calculatorContainer]}>
+          <View style={[styles.inputContainer, dynamicStyles.inputContainer]}>
             <TextInput
               value={input}
               onChangeText={(text) => setInput(text)}
-              style={styles.inputText}
+              style={[styles.inputText, dynamicStyles.inputText]}
               editable={true}
               onSelectionChange={({ nativeEvent: { selection } }) =>
                 setCursorPosition(selection.start)
@@ -154,27 +170,38 @@ const App: React.FC = () => {
             />
           </View>
 
-          <View style={styles.resultContainer}>
+          <View style={[styles.resultContainer, dynamicStyles.resultContainer]}>
             <TouchableOpacity
               style={styles.historyIcon}
               onPress={toggleHistory}
             >
-              <Icon name="history" size={30} color="#fff" />
+              <Icon
+                name="history"
+                size={30}
+                color={isDarkTheme ? "#fff" : "#000"}
+              />
             </TouchableOpacity>
-            <Text style={styles.resultText}>{result}</Text>
+            <Text style={[styles.resultText, dynamicStyles.resultText]}>
+              {result}
+            </Text>
           </View>
 
           {showHistory && (
-            <View style={styles.historyContainer}>
+            <View style={[styles.historyContainer, dynamicStyles.historyContainer]}>
               <View style={styles.historyHeader}>
-                <Text style={styles.historyTitle}>History</Text>
+                <Text style={[styles.historyTitle, dynamicStyles.historyTitle]}>
+                  History
+                </Text>
                 <TouchableOpacity onPress={clearHistory}>
                   <Text style={styles.clearHistory}>Clear</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView style={styles.historyScrollView}>
                 {history.map((entry, index) => (
-                  <Text key={index} style={styles.historyText}>
+                  <Text
+                    key={index}
+                    style={[styles.historyText, dynamicStyles.historyText]}
+                  >
                     {entry}
                   </Text>
                 ))}
@@ -213,18 +240,23 @@ const App: React.FC = () => {
                 key={button}
                 style={[
                   styles.button,
+                  dynamicStyles.button,
                   button === "=" && styles.equalButton,
                   button === "AC" && styles.clearButton,
                 ]}
                 onPress={() => handleInputChange(button)}
               >
-                <Text style={styles.buttonText}>{button}</Text>
+                <Text style={[styles.buttonText, dynamicStyles.buttonText]}>
+                  {button}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
 
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Calc by Aarya</Text>
+          <View style={[styles.footer, dynamicStyles.footer]}>
+            <Text style={[styles.footerText, dynamicStyles.footerText]}>
+              Calc by Aarya
+            </Text>
           </View>
         </View>
       </View>
@@ -232,13 +264,12 @@ const App: React.FC = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
   },
   navbar: {
-    backgroundColor: "black",
     paddingVertical: 15,
     alignItems: "center",
     width: "100%",
@@ -252,14 +283,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   navbarTitle: {
-    color: "white",
     fontSize: 24,
     fontWeight: "bold",
     letterSpacing: 1.2,
   },
+  themeToggle: {
+    marginLeft: 10,
+  },
   calculatorContainer: {
     flex: 1,
-    backgroundColor: "black",
     overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -272,11 +304,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-end",
     padding: 15,
-    backgroundColor: "#1E1E1E",
   },
   inputText: {
     fontSize: 30,
-    color: "#FFFFFF",
     width: "100%",
   },
   resultContainer: {
@@ -285,9 +315,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 15,
-    backgroundColor: "#1E1E1E",
     borderBottomWidth: 1,
-    borderBottomColor: "#444",
   },
   historyIcon: {
     padding: 10,
@@ -295,7 +323,6 @@ const styles = StyleSheet.create({
   },
   resultText: {
     fontSize: 32,
-    color: "#FFFFFF",
     flex: 1,
     textAlign: "right",
     marginRight: 10,
@@ -305,7 +332,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
     zIndex: 10,
     padding: 10,
   },
@@ -316,7 +342,6 @@ const styles = StyleSheet.create({
   },
   historyTitle: {
     fontSize: 18,
-    color: "#000",
     fontWeight: "bold",
   },
   clearHistory: {
@@ -325,7 +350,6 @@ const styles = StyleSheet.create({
   },
   historyText: {
     fontSize: 16,
-    color: "#555",
   },
   historyScrollView: {
     maxHeight: 100,
@@ -343,7 +367,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     margin: 5,
-    backgroundColor: "#3E3E3E",
     borderRadius: 12,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -359,17 +382,114 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 24,
-    color: "#FFFFFF",
   },
   footer: {
     alignItems: "center",
     padding: 12,
-    backgroundColor: "black",
   },
   footerText: {
     fontSize: 18,
-    color: "#FFFFFF",
     fontWeight: "600",
+  },
+});
+
+
+const darkStyles = StyleSheet.create({
+  container: {
+    backgroundColor: "#000",
+  },
+  navbar: {
+    backgroundColor: "#000",
+  },
+  navbarTitle: {
+    color: "#fff",
+  },
+  calculatorContainer: {
+    backgroundColor: "#000",
+  },
+  inputContainer: {
+    backgroundColor: "#1E1E1E",
+  },
+  inputText: {
+    color: "#fff",
+  },
+  resultContainer: {
+    backgroundColor: "#1E1E1E",
+    borderBottomColor: "#444",
+  },
+  resultText: {
+    color: "#fff",
+  },
+  historyContainer: {
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+  },
+  historyTitle: {
+    color: "#000",
+  },
+  historyText: {
+    color: "#555",
+  },
+  button: {
+    backgroundColor: "#3E3E3E",
+  },
+  buttonText: {
+    color: "#fff",
+  },
+  footer: {
+    backgroundColor: "#000",
+  },
+  footerText: {
+    color: "#fff",
+  },
+});
+
+
+const lightStyles = StyleSheet.create({
+  container: {
+    backgroundColor: "#F5F5F5",
+  },
+  navbar: {
+    backgroundColor: "#F5F5F5",
+  },
+  navbarTitle: {
+    color: "#000",
+  },
+  calculatorContainer: {
+    backgroundColor: "#F5F5F5",
+  },
+  inputContainer: {
+    backgroundColor: "#FFF",
+  },
+  inputText: {
+    color: "#000",
+  },
+  resultContainer: {
+    backgroundColor: "#FFF",
+    borderBottomColor: "#DDD",
+  },
+  resultText: {
+    color: "#000",
+  },
+  historyContainer: {
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+  },
+  historyTitle: {
+    color: "#FFF",
+  },
+  historyText: {
+    color: "#FFF",
+  },
+  button: {
+    backgroundColor: "#DDD",
+  },
+  buttonText: {
+    color: "#000",
+  },
+  footer: {
+    backgroundColor: "#F5F5F5",
+  },
+  footerText: {
+    color: "#000",
   },
 });
 
