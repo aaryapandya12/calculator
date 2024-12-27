@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
   },
   navbar: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "black",
     paddingVertical: 15,
     alignItems: "center",
     width: "100%",
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
   },
   calculatorContainer: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "black",
     overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
   footer: {
     alignItems: "center",
     padding: 12,
-    backgroundColor: "#4CAF50",
+    backgroundColor: "black",
   },
   footerText: {
     fontSize: 18,
